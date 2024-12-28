@@ -23,7 +23,7 @@ public class SelectionScreen : MonoBehaviour
     }
 
     public void StartGame()
-{
+    {
     // Get the selected operation
     string selectedOperation = "";
     foreach (Toggle toggle in operationToggleGroup.ActiveToggles())
@@ -40,29 +40,9 @@ public class SelectionScreen : MonoBehaviour
     PlayerPrefs.SetString("SelectedDifficulty", selectedDifficulty);
     PlayerPrefs.SetInt("SelectedQuantity", selectedQuantity);
 
-    // Determine which scene to load based on the selected operation
-    string sceneToLoad = "Addition"; // Default
-    switch (selectedOperation)
-    {
-        case "Addition":
-            sceneToLoad = "Addition";
-            break;
-        case "Subtraction":
-            sceneToLoad = "Subtraction";
-            break;
-        case "Multiplication":
-            sceneToLoad = "Multiplication";
-            break;
-        case "Division":
-            sceneToLoad = "Division";
-            break;
-        case "All":
-            sceneToLoad = "All4";
-            break;
-    }
 
     // Load the determined scene
-    UnityEngine.SceneManagement.SceneManager.LoadScene(sceneToLoad);
-}
+    UnityEngine.SceneManagement.SceneManager.LoadScene("Game");
+    }
 
 }

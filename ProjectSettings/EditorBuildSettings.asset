@@ -8,6 +8,12 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Addition.unity
     guid: 8c9cfa26abfee488c85f1582747f6a02
+  - enabled: 1
+    path: Assets/Scenes/Selection.unity
+    guid: a660bafe30497424bafe883dc68407fe
+  - enabled: 1
+    path: Assets/Scenes/Subtraction.unity
+    guid: 28174fff983de9044b42dcb379b87cfd
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
   m_UseUCBPForAssetBundles: 0

@@ -23,9 +23,9 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         // Retrieve settings from PlayerPrefs
-        string selectedOperation = PlayerPrefs.GetString("SelectedOperation", "Addition");
-        string selectedDifficulty = PlayerPrefs.GetString("SelectedDifficulty", "Easy");
-        int selectedQuantity = PlayerPrefs.GetInt("SelectedQuantity", 10);
+        string selectedOperation = PlayerPrefs.GetString("SelectedOperation");
+        string selectedDifficulty = PlayerPrefs.GetString("SelectedDifficulty");
+        int selectedQuantity = PlayerPrefs.GetInt("SelectedQuantity");
 
         // Initialize the game
         InitializeGame(selectedOperation, selectedDifficulty, selectedQuantity);
@@ -143,6 +143,7 @@ public class GameManager : MonoBehaviour
         home.gameObject.SetActive(true);
         home.onClick.RemoveAllListeners(); // Prevent duplicate listeners
         home.onClick.AddListener(() => GoBackToHome());
+        
  
     }
 
@@ -150,4 +151,5 @@ public class GameManager : MonoBehaviour
     {
         SceneManager.LoadScene("Selection"); // Replace "SelectionScreen" with your main menu scene name
     }
+
 }
