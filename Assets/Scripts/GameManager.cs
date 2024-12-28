@@ -11,9 +11,13 @@ public class GameManager : MonoBehaviour
     public GameObject summaryPanel;            // Panel to display the summary
     public Text summaryText;                   // Text inside the summary panel
 
+    public Button home;
+
     private int currentEquationIndex = 0;      // Tracks the current equation index
     private float timeElapsed = 0f;            // Tracks the elapsed time
     private int score = 0;                     // Tracks the player's score
+
+    private int correctAns = 0;
     private bool isGameRunning = true;         // Tracks if the game is active
 
     void Start()
@@ -84,6 +88,7 @@ public class GameManager : MonoBehaviour
         if (selectedAnswer == currentEquation.answer)
         {
             score += 10; // Correct answer
+            correctAns += 1;
             Debug.Log("Correct Answer! Score updated.");
         }
         else
@@ -123,35 +128,26 @@ public class GameManager : MonoBehaviour
         timeElapsed = Mathf.Round(timeElapsed * 10) / 10; // Round to 1 decimal place
 
         // Calculate correct and wrong answers
-        int correctAnswers = Mathf.Max(score / 10, 0); // Ensure correctAnswers is non-negative
-        int wrongAnswers = Mathf.Max((currentEquationIndex - correctAnswers), 0); // Total answered - correct
 
         // Show the summary panel
         summaryPanel.SetActive(true);
         summaryText.text = $"Game Over!\n" +
                            $"Time: {timeElapsed:F1} seconds\n" +
                            $"Score: {score}\n" +
-                           $"Correct: {correctAnswers}\n" +
-                           $"Wrong: {wrongAnswers}";
+                           $"Correct: {correctAns}\n" +
+                           $"Wrong: {currentEquationIndex - correctAns}";
 
-        Debug.Log($"Summary:\nTime: {timeElapsed}\nScore: {score}\nCorrect: {correctAnswers}\nWrong: {wrongAnswers}");
+        Debug.Log($"Summary:\nTime: {timeElapsed}\nScore: {score}\nCorrect: {correctAns}\nWrong: {currentEquationIndex - correctAns}");
 
         // Reveal the Home button and attach functionality
-        Button homeButton = summaryPanel.transform.Find("HomeButton").GetComponent<Button>();
-        if (homeButton != null)
-        {
-            homeButton.gameObject.SetActive(true);
-            homeButton.onClick.RemoveAllListeners(); // Prevent duplicate listeners
-            homeButton.onClick.AddListener(() => GoBackToHome());
-        }
-        else
-        {
-            Debug.LogError("HomeButton not found in SummaryPanel!");
-        }
+        home.gameObject.SetActive(true);
+        home.onClick.RemoveAllListeners(); // Prevent duplicate listeners
+        home.onClick.AddListener(() => GoBackToHome());
+ 
     }
 
     private void GoBackToHome()
     {
-        SceneManager.LoadScene("SelectionScreen"); // Replace "SelectionScreen" with your main menu scene name
+        SceneManager.LoadScene("Selection"); // Replace "SelectionScreen" with your main menu scene name
     }
 }

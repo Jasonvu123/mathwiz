@@ -7,8 +7,9 @@ public class AnswerSpawner : MonoBehaviour
     public List<Button> answerButtons;        // Preset buttons in the scene
     public EquationGenerator equationGenerator; // Reference to the equation generator
     public Text equationText;                // UI Text to display the current equation
+    public GameManager gameManager;           // Reference to the GameManager
 
-    private int currentEquationIndex = 0;    // Tracks the current equation index
+    //private int currentEquationIndex = 0;    // Tracks the current equation index
 
     public void AssignAnswers(EquationGenerator.EquationData currentEquation)
     {
@@ -30,7 +31,7 @@ public class AnswerSpawner : MonoBehaviour
 
             // Clear previous listeners and add a new one
             answerButtons[i].onClick.RemoveAllListeners();
-            answerButtons[i].onClick.AddListener(() => OnAnswerSelected(answer));
+            answerButtons[i].onClick.AddListener(() => gameManager.OnAnswerSelected(answer));
         }
     }
 
@@ -75,31 +76,5 @@ public class AnswerSpawner : MonoBehaviour
             list[randomIndex] = temp;
         }
         return list;
-    }
-
-    private void OnAnswerSelected(int selectedAnswer)
-    {
-        Debug.Log($"Answer selected: {selectedAnswer}");
-        var currentEquation = equationGenerator.GetEquationAt(currentEquationIndex);
-
-        if (selectedAnswer == currentEquation.answer)
-        {
-            Debug.Log("Correct Answer!");
-        }
-        else
-        {
-            Debug.Log("Wrong Answer!");
-        }
-
-        // Move to the next equation
-        currentEquationIndex++;
-        if (currentEquationIndex < equationGenerator.equations.Count)
-        {
-            AssignAnswers(equationGenerator.GetEquationAt(currentEquationIndex));
-        }
-        else
-        {
-            Debug.Log("All equations answered!");
-        }
     }
 }
