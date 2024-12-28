@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -77,14 +78,18 @@ public class GameManager : MonoBehaviour
 
         var currentEquation = equationGenerator.GetEquationAt(currentEquationIndex);
 
-        // Check if the answer is correct
+        // Debug the selected and correct answers
+        Debug.Log($"Selected: {selectedAnswer}, Correct: {currentEquation.answer}");
+
         if (selectedAnswer == currentEquation.answer)
         {
             score += 10; // Correct answer
+            Debug.Log("Correct Answer! Score updated.");
         }
         else
         {
             score -= 5; // Wrong answer
+            Debug.Log("Wrong Answer! Score updated.");
         }
 
         // Update the score UI
@@ -112,8 +117,41 @@ public class GameManager : MonoBehaviour
     {
         isGameRunning = false;
 
+        Debug.Log("Game Over! Displaying Summary.");
+
+        // Stop updating the timer
+        timeElapsed = Mathf.Round(timeElapsed * 10) / 10; // Round to 1 decimal place
+
+        // Calculate correct and wrong answers
+        int correctAnswers = Mathf.Max(score / 10, 0); // Ensure correctAnswers is non-negative
+        int wrongAnswers = Mathf.Max((currentEquationIndex - correctAnswers), 0); // Total answered - correct
+
         // Show the summary panel
         summaryPanel.SetActive(true);
-        summaryText.text = $"Game Over!\nTime: {timeElapsed:F1} seconds\nScore: {score}";
+        summaryText.text = $"Game Over!\n" +
+                           $"Time: {timeElapsed:F1} seconds\n" +
+                           $"Score: {score}\n" +
+                           $"Correct: {correctAnswers}\n" +
+                           $"Wrong: {wrongAnswers}";
+
+        Debug.Log($"Summary:\nTime: {timeElapsed}\nScore: {score}\nCorrect: {correctAnswers}\nWrong: {wrongAnswers}");
+
+        // Reveal the Home button and attach functionality
+        Button homeButton = summaryPanel.transform.Find("HomeButton").GetComponent<Button>();
+        if (homeButton != null)
+        {
+            homeButton.gameObject.SetActive(true);
+            homeButton.onClick.RemoveAllListeners(); // Prevent duplicate listeners
+            homeButton.onClick.AddListener(() => GoBackToHome());
+        }
+        else
+        {
+            Debug.LogError("HomeButton not found in SummaryPanel!");
+        }
+    }
+
+    private void GoBackToHome()
+    {
+        SceneManager.LoadScene("SelectionScreen"); // Replace "SelectionScreen" with your main menu scene name
     }
 }
